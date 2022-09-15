@@ -1,0 +1,22 @@
+{
+  "name": "serverapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async-exit-hook": "^2.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.1",
+    "nanoid": "^3.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

@@ -1,6 +1,5 @@
 const express = require('express');
 const User = require('../models/User');
-const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -21,11 +20,27 @@ router.post('/', async(req, res) => {
   }
 });
 
-router.post('/sessions', auth, async (req, res) => {
-  req.user.generateToken();
-  await req.user.save();
+router.post('/sessions', async (req, res) => {
+  try {
+    const user = await User.findOne({username: req.body.username});
 
-  res.send({message: 'User logged in', token: req.user.token});
+    if (!user) {
+      return res.status(401).send({error: 'Username and password are incorrect'});
+    }
+
+    const isMatch = await user.checkPassword(req.body.password);
+
+    if (!isMatch) {
+      return res.status(401).send({error: 'Username and password are incorrect'});
+    }
+
+    user.generateToken();
+    await user.save();
+
+    res.send({token: user.token});
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 module.exports = router;

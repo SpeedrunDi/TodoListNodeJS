@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 const exitHook = require('async-exit-hook');
 const config = require('./config');
 const users = require('./app/users');
+const tasks = require('./app/tasks');
 
 const app = express();
 const port = 8000;
 
 app.use(express.json());
 app.use('/users', users);
+app.use('/tasks', tasks);
 
 const run = async () => {
   await mongoose.connect(config.mongo.db, config.mongo.options);

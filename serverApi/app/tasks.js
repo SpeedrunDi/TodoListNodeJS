@@ -4,6 +4,15 @@ const Task = require("../models/Task");
 
 const router = express.Router();
 
+router.get('/', auth, async(req, res) => {
+    try {
+        const tasks = await Task.find({user: req.user._id});
+        res.send(tasks);
+    } catch (e) {
+        res.status(500).send({error: e.errors});
+    }
+});
+
 router.post('/', auth, async(req, res) => {
     const {title, description, status} = req.body;
 

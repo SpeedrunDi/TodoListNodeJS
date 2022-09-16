@@ -56,4 +56,21 @@ router.put('/:id', auth, async(req, res) => {
         res.status(400).send({error: e.errors});
     }
 });
+
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const task = await Task.findById({_id: req.params.id}, "user");
+
+        if (req.user._id.equals(task.user)) {
+            await Task.deleteOne({_id: req.params.id});
+
+            return res.send({message: 'Task deleted!'});
+        }
+
+        res.send({message: 'You have no rights!'});
+    } catch (e) {
+        res.status(400).send({error: e.errors});
+    }
+});
+
 module.exports = router;

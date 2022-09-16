@@ -39,7 +39,7 @@ router.post('/sessions', async (req, res) => {
 
     res.send({token: user.token});
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({error: e.errors});
   }
 });
 

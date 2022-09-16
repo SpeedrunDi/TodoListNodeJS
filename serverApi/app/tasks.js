@@ -36,4 +36,24 @@ router.post('/', auth, async(req, res) => {
     }
 });
 
+router.put('/:id', auth, async(req, res) => {
+    const {title, description, status} = req.body;
+    const taskData = {
+        user: req.user._id,
+        title,
+        description: description || null,
+        status
+    }
+    try{
+        const task = await Task.findById(req.params.id);
+        if(!task) {
+            res.status(404).send({message: 'Task not found!'});
+        }
+        const updateTask = await Task
+          .findByIdAndUpdate(req.params.id, taskData, {new: true});
+        res.send(updateTask);
+    } catch(e) {
+        res.status(400).send({error: e.errors});
+    }
+});
 module.exports = router;

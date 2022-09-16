@@ -5,8 +5,9 @@ const config = require('./config');
 
 const app = express();
 const port = 8000;
-
+const users = require('./app/users');
 app.use(express.json());
+app.use('/users', users);
 
 const run = async () => {
   await mongoose.connect(config.mongo.db, config.mongo.options);

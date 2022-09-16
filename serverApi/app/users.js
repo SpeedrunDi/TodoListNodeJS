@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
+const auth = require("../middlewares/auth");
 
 const router = express.Router();
 
@@ -19,4 +20,12 @@ router.post('/', async(req, res) => {
     res.status(400).send(e);
   }
 });
+
+router.post('/sessions', auth, async (req, res) => {
+  req.user.generateToken();
+  await req.user.save();
+
+  res.send({message: 'User logged in', token: req.user.token});
+});
+
 module.exports = router;

@@ -61,6 +61,10 @@ router.delete('/:id', auth, async (req, res) => {
     try {
         const task = await Task.findById({_id: req.params.id}, "user");
 
+        if (!task) {
+            return  res.status(404).send({message: 'Task does not exist!'});
+        }
+
         if (req.user._id.equals(task.user)) {
             await Task.deleteOne({_id: req.params.id});
 

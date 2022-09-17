@@ -7,7 +7,7 @@ router.post('/', async(req, res) => {
   const {username, password} = req.body;
 
   if(!username || !password){
-    res.status(400).send({error: 'Data not valid'});
+    return res.status(400).send({error: 'Data not valid'});
   }
   const userData = {username, password};
   try{
@@ -21,15 +21,19 @@ router.post('/', async(req, res) => {
 });
 
 router.post('/sessions', async (req, res) => {
+  const {username, password} = req.body;
+
+  if (!username || !password) {
+    return res.status(400).send({error: 'Data not valid'});
+  }
+
   try {
     const user = await User.findOne({username: req.body.username});
-
     if (!user) {
       return res.status(401).send({error: 'Username and password are incorrect'});
     }
 
     const isMatch = await user.checkPassword(req.body.password);
-
     if (!isMatch) {
       return res.status(401).send({error: 'Username and password are incorrect'});
     }

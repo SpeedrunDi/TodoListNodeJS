@@ -50,7 +50,7 @@ router.put('/:id', auth, async(req, res) => {
     try{
         const task = await Task.findById(req.params.id);
         if(!task) {
-            res.status(404).send({message: 'Task not found!'});
+            return res.status(404).send({message: 'Task not found!'});
         }
 
 
